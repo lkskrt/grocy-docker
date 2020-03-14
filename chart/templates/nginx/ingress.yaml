@@ -1,5 +1,4 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "grocy.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -8,7 +7,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ include "grocy.fullname" . }}
   labels:
     {{- include "grocy.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -34,7 +33,7 @@ spec:
         {{- range .paths }}
           - path: {{ . }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ include "grocy.fullnameNginx" $ }}
               servicePort: {{ $svcPort }}
         {{- end }}
   {{- end }}

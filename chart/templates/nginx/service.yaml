@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "grocy.fullname" . }}-nginx
+  name: {{ include "grocy.fullnameNginx" . }}
   labels:
-    {{- include "grocy.labels" . | nindent 4 }}
-    app.kubernetes.io/component: nginx
+    {{- include "grocy.labelsNginx" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,5 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "grocy.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: nginx
+    {{- include "grocy.selectorLabelsNginx" . | nindent 4 }}

@@ -24,6 +24,14 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
+{{- define "grocy.fullnameNginx" -}}
+{{ include "grocy.fullname" . }}-nginx
+{{- end -}}
+
+{{- define "grocy.fullnamePhp" -}}
+{{ include "grocy.fullname" . }}-php
+{{- end -}}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -43,12 +51,32 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
+{{- define "grocy.labelsNginx" -}}
+{{ include "grocy.labels" . }}
+app.kubernetes.io/component: nginx
+{{- end -}}
+
+{{- define "grocy.labelsPhp" -}}
+{{ include "grocy.labels" . }}
+app.kubernetes.io/component: php
+{{- end -}}
+
 {{/*
 Selector labels
 */}}
 {{- define "grocy.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "grocy.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
+
+{{- define "grocy.selectorLabelsNginx" -}}
+{{ include "grocy.selectorLabels" . }}
+app.kubernetes.io/component: nginx
+{{- end -}}
+
+{{- define "grocy.selectorLabelsPhp" -}}
+{{ include "grocy.selectorLabels" . }}
+app.kubernetes.io/component: php
 {{- end -}}
 
 {{/*

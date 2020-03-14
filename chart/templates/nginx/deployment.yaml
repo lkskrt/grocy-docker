@@ -3,19 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "grocy.fullname" . }}-nginx
   labels:
-    {{- include "grocy.labels" . | nindent 4 }}
-    app.kubernetes.io/component: nginx
+    {{- include "grocy.labelsNginx" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "grocy.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: nginx
+      {{- include "grocy.selectorLabelsNginx" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "grocy.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: nginx
+        {{- include "grocy.selectorLabelsNginx" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -31,15 +28,15 @@ spec:
           image: "{{ .Values.image.repository }}/nginx:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: php-fpm
-              containerPort: 9000
-              protocol: TCP
+          - name: http
+            containerPort: 8080
+            protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: php-fpm
+              port: http
           readinessProbe:
             tcpSocket:
-              port: php-fpm
+              port: http
           env:
           - name: PHP_HOST
             value: {{ include "grocy.fullname" . }}-php

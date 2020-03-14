@@ -7,7 +7,8 @@ WORKDIR /www
 # Install dependencies
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
     docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install -j$(nproc) gd
+    docker-php-ext-install -j$(nproc) gd && \
+    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Install grocy
 RUN curl -L \
@@ -15,9 +16,7 @@ RUN curl -L \
       -o /tmp/grocy.zip && \
     unzip /tmp/grocy.zip && \
     rm /tmp/grocy.zip && \
-    cp config-dist.php data/config.php && \
-    # Will otherwise produce a warning, has to be fixed upstream
-    echo "define('GROCY_USER_ID', null);" >> data/config.php
+    cp config-dist.php data/config.php
 
 ########################################################################################################################
 

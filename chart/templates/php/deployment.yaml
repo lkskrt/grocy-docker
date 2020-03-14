@@ -1,19 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "grocy.fullname" . }}-php
+  name: {{ include "grocy.fullnamePhp" . }}
   labels:
-    {{- include "grocy.labels" . | nindent 4 }}
-    app.kubernetes.io/component: php
+    {{- include "grocy.labelsPhp" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "grocy.selectorLabels" . | nindent 6 }}
+      {{- include "grocy.selectorLabelsPhp" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "grocy.selectorLabels" . | nindent 8 }}
+        {{- include "grocy.selectorLabelsPhp" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -29,17 +28,18 @@ spec:
           image: "{{ .Values.image.repository }}/php:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
+          - name: php-fpm
+            containerPort: 9000
+            protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: php-fpm
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: php-fpm
+          envFrom:
+          - configMapRef:
+              name: {{ include "grocy.fullnamePhp" . }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
