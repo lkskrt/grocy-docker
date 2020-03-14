@@ -1,0 +1,26 @@
+variables:
+  IMAGE_TAG_PHP: $CI_REGISTRY_IMAGE/php
+  IMAGE_TAG_NGINX: $CI_REGISTRY_IMAGE/nginx
+
+images:
+  stage: build
+  image: docker:dind
+  services:
+  - docker:dind
+  script:
+  - source .env
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker build --target grocy-php -t $IMAGE_TAG_PHP:$GROCY_VERSION .
+  - docker build --target grocy-nginx -t $IMAGE_TAG_NGINX:$GROCY_VERSION .
+  - docker push $IMAGE_TAG_PHP:$GROCY_VERSION
+  - docker push $IMAGE_TAG_NGINX:$GROCY_VERSION
+
+chart:
+  stage: build
+  image: incloudhq/kube-deploy:v1.17.2
+  script:
+  - source .env
+  - helm package --app-version $GROCY_VERSION chart
+  artifacts:
+    paths:
+    - grocy-*.tgz

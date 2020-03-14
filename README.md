@@ -1,8 +1,8 @@
-# Grocy on Docker
+# Grocy on Docker and Kubernetes
 
-ERP beyond your fridge - now containerized! This is the docker repo of [grocy](https://github.com/grocy/grocy).
+ERP beyond your fridge - now containerized and helmified! This is the docker repo of [grocy](https://github.com/grocy/grocy).
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/grocy/grocy-docker.svg)](https://hub.docker.com/r/grocy/grocy-docker/)
+[![Docker Pulls](https://ddimg.shields.io/docker/pulls/grocy/grocy-docker.svg)](https://hub.docker.com/r/grocy/grocy-docker/)
 [![Docker Stars](https://img.shields.io/docker/stars/grocy/grocy-docker.svg)](https://hub.docker.com/r/grocy/grocy-docker/)
 
 ## Install Docker
@@ -18,7 +18,7 @@ Follow [these instructions](https://docs.docker.com/engine/installation/) to get
 > docker-compose up
 ```
 
-And grocy should be accessible via `http(s)://localhost/`. The https option will work. However, since the certificate is self-signed, most browsers will complain.
+And grocy should be accessible via `http://localhost:8080`. If you want to use https you can adjust the nginx configuration by mounting it inside the container as a volume or by extending the image.
 
 Note: if you have not pulled any of the images from the repository, when you do an `up`, it will attempt to build from scratch!
 

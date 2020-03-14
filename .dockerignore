@@ -1,7 +1,3 @@
-.git
-.vscode
-.gitignore
-build.bat
-Dockerfile-grocy
-Dockerfile-grocy-nginx
-.DS_store
+**
+!/nginx.conf
+!/nginx-entrypoint.sh
