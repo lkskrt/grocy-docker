@@ -10,8 +10,8 @@ images:
   script:
   - source .env
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  - docker build --target grocy-php -t $IMAGE_TAG_PHP:$GROCY_VERSION .
-  - docker build --target grocy-nginx -t $IMAGE_TAG_NGINX:$GROCY_VERSION .
+  - docker build --build-arg GROCY_VERSION=$GROCY_VERSION --target grocy-php -t $IMAGE_TAG_PHP:$GROCY_VERSION .
+  - docker build --build-arg GROCY_VERSION=$GROCY_VERSION --target grocy-nginx -t $IMAGE_TAG_NGINX:$GROCY_VERSION .
   - docker push $IMAGE_TAG_PHP:$GROCY_VERSION
   - docker push $IMAGE_TAG_NGINX:$GROCY_VERSION
 
