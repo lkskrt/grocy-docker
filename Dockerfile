@@ -18,6 +18,8 @@ RUN curl -L \
     rm /tmp/grocy.zip && \
     cp config-dist.php data/config.php
 
+USER 2000:2000
+
 ########################################################################################################################
 
 FROM nginx:1.17.9-alpine AS grocy-nginx

@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "grocy.labelsNginx" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCountNginx }}
   selector:
     matchLabels:
       {{- include "grocy.selectorLabelsNginx" . | nindent 6 }}

@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "grocy.labelsPhp" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCountPhp }}
   selector:
     matchLabels:
       {{- include "grocy.selectorLabelsPhp" . | nindent 6 }}
@@ -40,8 +40,26 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ include "grocy.fullnamePhp" . }}
+          volumeMounts:
+          - mountPath: /www/data
+            name: data
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      initContainers:
+      - name: data
+        image: busybox
+        command: ["sh", "-c", "touch -a /www/data/config.php && mkdir -p /www/data/viewcache"]
+        volumeMounts:
+        - name: data
+          mountPath: /www/data
+      volumes:
+      - name: data
+        {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (include "grocy.fullnamePhp" .) }}
+        {{- else }}
+        emptyDir: {}
+        {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
