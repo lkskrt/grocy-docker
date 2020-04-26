@@ -1,4 +1,4 @@
-FROM php:7.4.3-fpm-alpine3.11 as grocy-php
+FROM php:7.4.5-fpm-alpine3.11 as grocy-php
 
 ARG GROCY_VERSION
 
@@ -22,7 +22,7 @@ USER 2000:2000
 
 ########################################################################################################################
 
-FROM nginx:1.17.9-alpine AS grocy-nginx
+FROM nginx:1.18.0-alpine AS grocy-nginx
 
 WORKDIR /www
 
