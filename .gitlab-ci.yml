@@ -24,4 +24,5 @@ chart:
   - helm repo index .
   artifacts:
     paths:
+    - index.yaml
     - grocy-*.tgz
