@@ -1,4 +1,4 @@
-FROM php:7.4.5-fpm-alpine3.11 as grocy-php
+FROM php:7.4.13-fpm-alpine3.12 as grocy-php
 
 ARG GROCY_VERSION
 
@@ -16,13 +16,14 @@ RUN curl -L \
       -o /tmp/grocy.zip && \
     unzip /tmp/grocy.zip && \
     rm /tmp/grocy.zip && \
-    cp config-dist.php data/config.php
+    cp config-dist.php data/config.php && \
+    chmod a+w data
 
 USER 2000:2000
 
 ########################################################################################################################
 
-FROM nginx:1.18.0-alpine AS grocy-nginx
+FROM nginx:1.19.6-alpine AS grocy-nginx
 
 WORKDIR /www
 
