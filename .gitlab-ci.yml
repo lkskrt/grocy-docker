@@ -21,6 +21,7 @@ chart:
   script:
   - source .env
   - helm package --app-version $GROCY_VERSION chart
+  - helm repo index .
   artifacts:
     paths:
     - grocy-*.tgz
